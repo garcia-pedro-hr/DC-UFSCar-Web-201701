@@ -1,8 +1,10 @@
-package br.ufscar.dc.dsw
+package br.ufscar.dc.web
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import grails.compiler.GrailsCompileStatic
 
+@GrailsCompileStatic
 @EqualsAndHashCode(includes='authority')
 @ToString(includes='authority', includeNames=true, includePackage=false)
 class Papel implements Serializable {
@@ -11,13 +13,8 @@ class Papel implements Serializable {
 
 	String authority
 
-	Papel(String authority) {
-		this()
-		this.authority = authority
-	}
-
 	static constraints = {
-		authority blank: false, unique: true
+		authority nullable: false, blank: false, unique: true
 	}
 
 	static mapping = {

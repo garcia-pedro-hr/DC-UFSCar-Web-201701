@@ -1,4 +1,4 @@
-package br.ufscar.dc.dsw
+package br.ufscar.dc.web
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional

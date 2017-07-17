@@ -1,11 +1,11 @@
-package br.ufscar.dc.dsw
+package br.ufscar.dc.web
 
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(UsuarioPapelController)
-@Mock(UsuarioPapel)
-class UsuarioPapelControllerSpec extends Specification {
+@TestFor(UsuarioController)
+@Mock(Usuario)
+class UsuarioControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -21,8 +21,8 @@ class UsuarioPapelControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.usuarioPapelList
-            model.usuarioPapelCount == 0
+            !model.usuarioList
+            model.usuarioCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -30,7 +30,7 @@ class UsuarioPapelControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.usuarioPapel!= null
+            model.usuario!= null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -38,25 +38,25 @@ class UsuarioPapelControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
-            def usuarioPapel = new UsuarioPapel()
-            usuarioPapel.validate()
-            controller.save(usuarioPapel)
+            def usuario = new Usuario()
+            usuario.validate()
+            controller.save(usuario)
 
         then:"The create view is rendered again with the correct model"
-            model.usuarioPapel!= null
+            model.usuario!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            usuarioPapel = new UsuarioPapel(params)
+            usuario = new Usuario(params)
 
-            controller.save(usuarioPapel)
+            controller.save(usuario)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/usuarioPapel/show/1'
+            response.redirectedUrl == '/usuario/show/1'
             controller.flash.message != null
-            UsuarioPapel.count() == 1
+            Usuario.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -68,11 +68,11 @@ class UsuarioPapelControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def usuarioPapel = new UsuarioPapel(params)
-            controller.show(usuarioPapel)
+            def usuario = new Usuario(params)
+            controller.show(usuario)
 
         then:"A model is populated containing the domain instance"
-            model.usuarioPapel == usuarioPapel
+            model.usuario == usuario
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -84,11 +84,11 @@ class UsuarioPapelControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def usuarioPapel = new UsuarioPapel(params)
-            controller.edit(usuarioPapel)
+            def usuario = new Usuario(params)
+            controller.edit(usuario)
 
         then:"A model is populated containing the domain instance"
-            model.usuarioPapel == usuarioPapel
+            model.usuario == usuario
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -98,28 +98,28 @@ class UsuarioPapelControllerSpec extends Specification {
             controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/usuarioPapel/index'
+            response.redirectedUrl == '/usuario/index'
             flash.message != null
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def usuarioPapel = new UsuarioPapel()
-            usuarioPapel.validate()
-            controller.update(usuarioPapel)
+            def usuario = new Usuario()
+            usuario.validate()
+            controller.update(usuario)
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.usuarioPapel == usuarioPapel
+            model.usuario == usuario
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            usuarioPapel = new UsuarioPapel(params).save(flush: true)
-            controller.update(usuarioPapel)
+            usuario = new Usuario(params).save(flush: true)
+            controller.update(usuario)
 
         then:"A redirect is issued to the show action"
-            usuarioPapel != null
-            response.redirectedUrl == "/usuarioPapel/show/$usuarioPapel.id"
+            usuario != null
+            response.redirectedUrl == "/usuario/show/$usuario.id"
             flash.message != null
     }
 
@@ -130,23 +130,23 @@ class UsuarioPapelControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/usuarioPapel/index'
+            response.redirectedUrl == '/usuario/index'
             flash.message != null
 
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def usuarioPapel = new UsuarioPapel(params).save(flush: true)
+            def usuario = new Usuario(params).save(flush: true)
 
         then:"It exists"
-            UsuarioPapel.count() == 1
+            Usuario.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(usuarioPapel)
+            controller.delete(usuario)
 
         then:"The instance is deleted"
-            UsuarioPapel.count() == 0
-            response.redirectedUrl == '/usuarioPapel/index'
+            Usuario.count() == 0
+            response.redirectedUrl == '/usuario/index'
             flash.message != null
     }
 }

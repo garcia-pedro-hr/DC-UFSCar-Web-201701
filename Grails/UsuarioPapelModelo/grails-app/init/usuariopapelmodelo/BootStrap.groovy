@@ -1,30 +1,48 @@
 package usuariopapelmodelo
 
-import br.ufscar.dc.dsw.Usuario
-import br.ufscar.dc.dsw.Papel
-import br.ufscar.dc.dsw.UsuarioPapel
+import br.ufscar.dc.web.Usuario
+import br.ufscar.dc.web.Papel
+import br.ufscar.dc.web.UsuarioPapel
 
 class BootStrap {
 
     def init = { servletContext ->
-        def adminPapel = Papel.findByAuthority("ROLE_ADMIN") ?:
-                new Papel(authority: "ROLE_ADMIN").save()
 
-        def admin = new Usuario(
-                username: "admin",
-                password: "root",
-                nome: "Administrador",
-                enabled : true
-        )
+        if (!Papel.list()) {
+            new Papel(authority: "ROLE_ADMIN").save flush: true  /* Administrador */
+            new Papel(authority: "ROLE_USER").save flush: true   /* Usuário */
 
-        admin.save()
-        if (admin.hasErrors()) {
-            println admin.errors
+            println "Populando papéis de usuário - OK"
         }
-        UsuarioPapel.create(admin,adminPapel)
 
-        println 'populando usuÃ¡rio admin - ok'
+        if (!Usuario.list()) {
+            def admin = new Usuario (
+                    username: "admin",
+                    password: "root",
+                    nome: "Administrador",
+                    enabled: true
+            )
+            admin.save flush: true
+
+            UsuarioPapel.create admin, Papel.findByAuthority("ROLE_ADMIN"), true
+
+            println "Populando usuario admin - OK"
+
+            def usuario = new Usuario(
+                    username: "usuario",
+                    password: "root",
+                    nome: "Usuario",
+                    enabled: true
+            )
+            usuario.save flush: true
+
+            UsuarioPapel.create usuario, Papel.findByAuthority("ROLE_SLSMN"), true
+
+            println "Populando usuario comum - OK"
+        }
+
     }
+
     def destroy = {
     }
 }
